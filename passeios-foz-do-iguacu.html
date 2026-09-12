@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trilha do Desbravador — Foz do Iguaçu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --deep:#0E3B36; --leaf:#1F6E52; --mist:#F5F7F2; --ink:#16221D;
+    --ink-soft:#46564F; --gold:#D6A64A; --line:#DCE3DC; --wa:#25A05A;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; background:var(--mist); color:var(--ink); font-family:'Inter',sans-serif; line-height:1.55; }
+  h1,h2,h3,.display{ font-family:'Newsreader',serif; font-weight:500; letter-spacing:-0.01em; }
+  a{ color:inherit; } img{ max-width:100%; display:block; }
+
+  /* topbar + progress */
+  .topbar{ position:sticky; top:0; z-index:40; background:rgba(14,59,54,0.97); color:#EFF3EE; }
+  .topbar-inner{ max-width:1080px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:14px 24px; gap:16px; }
+  .brand{ font-family:'Newsreader',serif; font-size:1.1rem; font-style:italic; white-space:nowrap; }
+  .brand span{ color:var(--gold); }
+  .progress-wrap{ display:flex; align-items:center; gap:10px; flex:1; max-width:280px; }
+  .progress-track{ flex:1; height:6px; background:rgba(239,243,238,0.2); border-radius:4px; overflow:hidden; }
+  .progress-fill{ height:100%; width:0%; background:var(--gold); transition:width .4s ease; }
+  .progress-label{ font-size:0.78rem; color:#C9D9CD; white-space:nowrap; }
+  @media (max-width:640px){ .progress-label{ display:none; } }
+
+  /* hero */
+  .hero{ position:relative; min-height:64vh; display:flex; align-items:flex-end;
+    background:linear-gradient(180deg, rgba(10,30,27,0.2) 0%, rgba(8,24,21,0.88) 100%),
+    url('https://commons.wikimedia.org/wiki/Special:FilePath/Iguazu_Falls.jpg') center/cover no-repeat; }
+  .hero-inner{ max-width:1080px; margin:0 auto; width:100%; padding:60px 24px 44px; color:#F3F1E7; }
+  .hero-eyebrow{ font-size:0.88rem; color:#C9D9CD; margin:0 0 10px; letter-spacing:0.02em; }
+  .hero h1{ font-size:clamp(2.2rem,5vw,3.4rem); margin:0 0 16px; max-width:17ch; line-height:1.08; }
+  .hero p{ max-width:48ch; color:#DCE6DF; font-size:1.02rem; margin:0 0 28px; }
+  .btn{ display:inline-flex; align-items:center; gap:10px; padding:14px 24px; border-radius:3px; font-size:0.95rem; font-weight:600; text-decoration:none; border:1px solid transparent; cursor:pointer; }
+  .btn-start{ background:var(--gold); color:#20261a; }
+  .btn-start:hover{ background:#c6963f; }
+  .btn-wa{ background:var(--wa); color:#fff; }
+  .btn-wa:hover{ background:#1e8a4b; }
+
+  /* trail map */
+  .trail-section{ max-width:1080px; margin:56px auto 0; padding:0 24px; }
+  .trail-section h2{ font-size:1.5rem; margin:0 0 6px; }
+  .trail-section .sub{ color:var(--ink-soft); margin:0 0 32px; max-width:56ch; }
+  .trail{ display:flex; align-items:flex-start; justify-content:space-between; position:relative; gap:6px; }
+  .trail::before{ content:""; position:absolute; top:23px; left:5%; right:5%; height:2px; background:var(--line); z-index:0; }
+  .stop{ position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; gap:8px; background:none; border:none; cursor:pointer; font-family:'Inter',sans-serif; flex:1; padding:0; }
+  .stop-icon{ width:46px; height:46px; border-radius:50%; background:#fff; border:2px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:1.3rem; transition:all .25s ease; }
+  .stop.done .stop-icon{ background:var(--gold); border-color:var(--gold); }
+  .stop-label{ font-size:0.72rem; color:var(--ink-soft); text-align:center; max-width:9ch; }
+  .stop.done .stop-label{ color:var(--deep); font-weight:600; }
+  @media (max-width:720px){
+    .trail{ flex-wrap:wrap; row-gap:26px; }
+    .trail::before{ display:none; }
+    .stop{ flex:1 1 28%; }
+  }
+
+  /* intro */
+  .intro{ max-width:720px; margin:56px auto 8px; padding:0 24px; }
+  .intro h2{ font-size:1.4rem; margin:0 0 12px; }
+  .intro p{ color:var(--ink-soft); }
+
+  /* tours */
+  .tours{ max-width:1080px; margin:20px auto 0; padding:0 24px; }
+  .tour{ display:grid; grid-template-columns:1.1fr 1fr; gap:48px; align-items:center; padding:56px 0; border-bottom:1px solid var(--line); scroll-margin-top:100px; position:relative; }
+  .tour:last-child{ border-bottom:none; }
+  .tour.flip .tour-media{ order:2; } .tour.flip .tour-copy{ order:1; }
+  .tour-media{ position:relative; }
+  .tour-media img{ width:100%; height:340px; object-fit:cover; border-radius:2px; }
+  .stamp{ position:absolute; top:14px; right:14px; background:#fff; border:2px solid var(--gold); color:var(--deep); border-radius:50%;
+    width:78px; height:78px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+    transform:rotate(-10deg) scale(0.6); opacity:0; transition:all .35s cubic-bezier(.34,1.56,.64,1); font-size:0.62rem; font-weight:700; line-height:1.15; pointer-events:none; }
+  .stamp.visible{ transform:rotate(-10deg) scale(1); opacity:1; }
+  .stamp .check{ font-size:1.3rem; margin-bottom:2px; }
+  .tour-copy .kicker{ font-size:0.8rem; color:var(--leaf); font-weight:600; margin:0 0 8px; }
+  .tour-copy h3{ font-size:1.65rem; margin:0 0 14px; }
+  .tour-copy p.desc{ color:var(--ink-soft); margin:0 0 22px; max-width:52ch; }
+  .price-row{ display:flex; flex-wrap:wrap; gap:10px 28px; padding:16px 0 20px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-bottom:22px; }
+  .price-item{ font-size:0.87rem; } .price-item .amt{ font-family:'Newsreader',serif; font-size:1.22rem; color:var(--deep); display:block; }
+  .price-item .lbl{ color:var(--ink-soft); }
+  .tour-actions{ display:flex; flex-wrap:wrap; gap:14px 24px; align-items:center; }
+  .tour-cta{ display:inline-flex; align-items:center; gap:8px; color:var(--deep); font-weight:600; font-size:0.9rem; text-decoration:none; border-bottom:1px solid var(--deep); padding-bottom:2px; }
+  .tour-cta:hover{ color:var(--wa); border-color:var(--wa); }
+  .mark-btn{ background:none; border:1px solid var(--line); color:var(--ink-soft); font-size:0.85rem; font-weight:600; padding:9px 16px; border-radius:20px; cursor:pointer; font-family:'Inter',sans-serif; transition:all .2s ease; }
+  .mark-btn:hover{ border-color:var(--gold); color:var(--deep); }
+  .mark-btn.done{ background:var(--deep); border-color:var(--deep); color:#EFF3EE; }
+
+  @media (max-width:800px){
+    .tour, .tour.flip{ grid-template-columns:1fr; gap:22px; }
+    .tour.flip .tour-media, .tour.flip .tour-copy{ order:0; }
+    .tour-media img{ height:240px; }
+  }
+
+  /* closing */
+  .closing{ background:var(--deep); color:#EFF3EE; margin-top:40px; padding:72px 24px; text-align:center; }
+  .closing h2{ font-size:clamp(1.5rem,3.2vw,2.1rem); margin:0 0 14px; transition:all .3s ease; }
+  .closing p{ color:#C9D9CD; max-width:48ch; margin:0 auto 28px; }
+  footer{ max-width:1080px; margin:0 auto; padding:28px 24px 48px; color:var(--ink-soft); font-size:0.82rem; }
+
+  .float-wa{ position:fixed; right:18px; bottom:18px; z-index:50; background:var(--wa); color:#fff; width:54px; height:54px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; box-shadow:0 6px 18px rgba(0,0,0,0.25); text-decoration:none; }
+  .float-wa svg{ width:26px; height:26px; fill:#fff; }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">Trilha do <span>Desbravador</span></div>
+      <div class="progress-wrap">
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-label" id="progressLabel">0 de 6 desbravados</div>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Foz do Iguaçu, Paraná</p>
+      <h1>Desbrave os seis destinos que todo explorador de Foz precisa marcar no mapa</h1>
+      <p>Uma trilha, seis paradas. Escolha por onde começar, confira o que cada lugar oferece e vá carimbando seu diário de bordo conforme avança.</p>
+      <a class="btn btn-start" href="#trilha">Iniciar minha expedição ↓</a>
+    </div>
+  </header>
+
+  <section class="trail-section" id="trilha">
+    <h2>Seu mapa de expedição</h2>
+    <p class="sub">Toque em qualquer parada para ir direto até ela. Depois de visitar, marque como desbravada e acompanhe seu progresso lá em cima.</p>
+    <div class="trail">
+      <button class="stop" data-target="cataratas"><span class="stop-icon">🌊</span><span class="stop-label">Cataratas</span></button>
+      <button class="stop" data-target="aves"><span class="stop-icon">🦜</span><span class="stop-label">Parque das Aves</span></button>
+      <button class="stop" data-target="itaipu"><span class="stop-icon">⚡</span><span class="stop-label">Itaipu</span></button>
+      <button class="stop" data-target="marco"><span class="stop-icon">🧭</span><span class="stop-label">3 Fronteiras</span></button>
+      <button class="stop" data-target="macuco"><span class="stop-icon">🚤</span><span class="stop-label">Macuco Safari</span></button>
+      <button class="stop" data-target="templo"><span class="stop-icon">🪷</span><span class="stop-label">Templo Budista</span></button>
+    </div>
+  </section>
+
+  <section class="intro">
+    <h2>Como funciona a trilha</h2>
+    <p>Cada parada abaixo tem o que você vai encontrar, o valor do ingresso e um botão para marcar como desbravada assim que decidir incluí-la no seu roteiro. Quando quiser fechar os detalhes e garantir vaga, é só chamar no WhatsApp.</p>
+  </section>
+
+  <main class="tours">
+
+    <article class="tour" id="cataratas">
+      <div class="tour-media">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Iguazu_Falls.jpg" alt="Cataratas do Iguaçu, lado brasileiro">
+        <div class="stamp" data-stamp="cataratas"><span class="check">✓</span>DESBRAVADO</div>
+      </div>
+      <div class="tour-copy">
+        <p class="kicker">Parada 1 · Parque Nacional do Iguaçu</p>
+        <h3>Cataratas do Iguaçu — lado brasileiro</h3>
+        <p class="desc">A trilha de passarelas mais famosa do parque, com vista ampla dos saltos e o mirante final bem em frente à Garganta do Diabo. Leva cerca de 1h a 1h30 de caminhada tranquila.</p>
+        <div class="price-row">
+          <div class="price-item"><span class="amt">R$ 134</span><span class="lbl">adulto estrangeiro</span></div>
+          <div class="price-item"><span class="amt">R$ 121</span><span class="lbl">países do Mercosul</span></div>
+          <div class="price-item"><span class="amt">R$ 26</span><span class="lbl">brasileiro / idoso</span></div>
+        </div>
+        <div class="tour-actions">
+          <button class="mark-btn" data-target="cataratas">Marcar como desbravada</button>
+          <a class="tour-cta" href="https://wa.me/qr/VJIJYTRAKMWJD1" target="_blank" rel="noopener">Garantir minha vaga →</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="tour flip" id="aves">
+      <div class="tour-media">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Parque_das_Aves,_Foz_do_Iguacu,_Brazil-12Feb2011.jpg" alt="Parque das Aves, Foz do Iguaçu">
+        <div class="stamp" data-stamp="aves"><span class="check">✓</span>DESBRAVADO</div>
+      </div>
+      <div class="tour-copy">
+        <p class="kicker">Parada 2 · Ao lado da entrada das Cataratas</p>
+        <h3>Parque das Aves</h3>
+        <p class="desc">Viveiros imersivos onde você caminha entre araras, tucanos e borboletas soltos. Ótimo para complementar a visita às Cataratas no mesmo dia, já que fica na porta do parque.</p>
+        <div class="price-row">
+          <div class="price-item"><span class="amt">R$ 80</span><span class="lbl">adulto</span></div>
+          <div class="price-item"><span class="amt">R$ 40</span><span class="lbl">aposentado / estudante / professor</span></div>
+          <div class="price-item"><span class="amt">Grátis</span><span class="lbl">até 8 anos</span></div>
+        </div>
+        <div class="tour-actions">
+          <button class="mark-btn" data-target="aves">Marcar como desbravada</button>
+          <a class="tour-cta" href="https://wa.me/qr/VJIJYTRAKMWJD1" target="_blank" rel="noopener">Garantir minha vaga →</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="tour" id="itaipu">
+      <div class="tour-media">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Itaipu_Dam.jpg" alt="Usina de Itaipu Binacional">
+        <div class="stamp" data-stamp="itaipu"><span class="check">✓</span>DESBRAVADO</div>
+      </div>
+      <div class="tour-copy">
+        <p class="kicker">Parada 3 · Fronteira com o Paraguai</p>
+        <h3>Itaipu Binacional</h3>
+        <p class="desc">Tour panorâmico de ônibus pela estrutura da usina, uma das maiores hidrelétricas do mundo. Quem quiser ver o interior da casa de força pode optar pelo tour especial.</p>
+        <div class="price-row">
+          <div class="price-item"><span class="amt">R$ 63</span><span class="lbl">tour panorâmico — adulto</span></div>
+          <div class="price-item"><span class="amt">R$ 31,50</span><span class="lbl">criança 6–11 anos</span></div>
+          <div class="price-item"><span class="amt">R$ 185</span><span class="lbl">tour especial</span></div>
+        </div>
+        <div class="tour-actions">
+          <button class="mark-btn" data-target="itaipu">Marcar como desbravada</button>
+          <a class="tour-cta" href="https://wa.me/qr/VJIJYTRAKMWJD1" target="_blank" rel="noopener">Garantir minha vaga →</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="tour flip" id="marco">
+      <div class="tour-media">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Marco_das_Três_Fronteiras,_Foz_do_Iguaçú.jpg" alt="Marco das Três Fronteiras">
+        <div class="stamp" data-stamp="marco"><span class="check">✓</span>DESBRAVADO</div>
+      </div>
+      <div class="tour-copy">
+        <p class="kicker">Parada 4 · Onde três países se encontram</p>
+        <h3>Marco das Três Fronteiras</h3>
+        <p class="desc">Mirante sobre o encontro dos rios Iguaçu e Paraná, com vista dos obeliscos do Brasil, Argentina e Paraguai. Show cultural ao entardecer incluso no ingresso.</p>
+        <div class="price-row">
+          <div class="price-item"><span class="amt">R$ 57</span><span class="lbl">adulto</span></div>
+          <div class="price-item"><span class="amt">R$ 31,50</span><span class="lbl">+60 anos / 6–11 anos</span></div>
+        </div>
+        <div class="tour-actions">
+          <button class="mark-btn" data-target="marco">Marcar como desbravada</button>
+          <a class="tour-cta" href="https://wa.me/qr/VJIJYTRAKMWJD1" target="_blank" rel="noopener">Garantir minha vaga →</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="tour" id="macuco">
+      <div class="tour-media">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Rio_Iguaçu_-_Macuco_Safari.jpg" alt="Barco do Macuco Safari no Rio Iguaçu">
+        <div class="stamp" data-stamp="macuco"><span class="check">✓</span>DESBRAVADO</div>
+      </div>
+      <div class="tour-copy">
+        <p class="kicker">Parada 5 · Dentro do Parque Nacional</p>
+        <h3>Macuco Safari</h3>
+        <p class="desc">Trilha elétrica pela mata seguida de um trecho a pé, terminando num barco que sobe o rio quase até embaixo das quedas. Prepare-se para se molhar. O ingresso do Parque Nacional é à parte.</p>
+        <div class="price-row">
+          <div class="price-item"><span class="amt">R$ 384</span><span class="lbl">adulto</span></div>
+          <div class="price-item"><span class="amt">R$ 192</span><span class="lbl">meia-entrada (7–11 anos, 60+, estudante)</span></div>
+        </div>
+        <div class="tour-actions">
+          <button class="mark-btn" data-target="macuco">Marcar como desbravada</button>
+          <a class="tour-cta" href="https://wa.me/qr/VJIJYTRAKMWJD1" target="_blank" rel="noopener">Garantir minha vaga →</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="tour flip" id="templo">
+      <div class="tour-media">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Templo_budista_de_foz_do_iguaçu1.JPG" alt="Templo Budista Chen Tien, Foz do Iguaçu">
+        <div class="stamp" data-stamp="templo"><span class="check">✓</span>DESBRAVADO</div>
+      </div>
+      <div class="tour-copy">
+        <p class="kicker">Parada 6 · Alto da cidade</p>
+        <h3>Templo Budista Chen Tien</h3>
+        <p class="desc">Jardins com mais de 120 estátuas, incluindo a maior imagem de Buda da América do Sul. Passeio tranquilo, ótimo para fechar o dia com uma vista da Ciudad del Este ao fundo.</p>
+        <div class="price-row">
+          <div class="price-item"><span class="amt">Gratuito</span><span class="lbl">entrada do templo</span></div>
+        </div>
+        <div class="tour-actions">
+          <button class="mark-btn" data-target="templo">Marcar como desbravada</button>
+          <a class="tour-cta" href="https://wa.me/qr/VJIJYTRAKMWJD1" target="_blank" rel="noopener">Combinar transporte →</a>
+        </div>
+      </div>
+    </article>
+
+  </main>
+
+  <section class="closing">
+    <h2 id="closingTitle">Sua expedição está só começando</h2>
+    <p id="closingText">Marque as paradas que quer incluir no roteiro e, quando estiver pronto, chame no WhatsApp pra fechar tudo.</p>
+    <a class="btn btn-wa" href="https://wa.me/qr/VJIJYTRAKMWJD1" target="_blank" rel="noopener">Chamar meu guia no WhatsApp</a>
+  </section>
+
+  <footer>
+    Preços de referência, sujeitos a reajuste pelos parques e operadoras — confirme o valor do dia na reserva. Fotos: Wikimedia Commons.
+  </footer>
+
+  <a class="float-wa" href="https://wa.me/qr/VJIJYTRAKMWJD1" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <svg viewBox="0 0 32 32"><path d="M16 3C9 3 3.3 8.7 3.3 15.7c0 2.4.6 4.6 1.8 6.6L3 29l6.9-2c1.9 1 4 1.6 6.1 1.6 7 0 12.7-5.7 12.7-12.7S23 3 16 3zm0 23.1c-1.9 0-3.7-.5-5.3-1.5l-.4-.2-4.1 1.2 1.2-4-.3-.4c-1.1-1.7-1.7-3.7-1.7-5.7 0-5.8 4.7-10.5 10.5-10.5s10.5 4.7 10.5 10.5S21.8 26.1 16 26.1zm5.8-7.9c-.3-.2-1.9-.9-2.1-1-.3-.1-.5-.2-.8.2-.2.3-.9 1-1.1 1.3-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.7-1.7-1-.9-1.7-2-1.9-2.3-.2-.3 0-.5.1-.7.2-.2.3-.4.5-.6.2-.2.2-.4.3-.6.1-.2 0-.5 0-.7-.1-.2-.8-2-1.1-2.7-.3-.7-.6-.6-.8-.6h-.7c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.3 3.4 1.4 3.6c.2.2 2.6 4 6.3 5.5.9.4 1.6.6 2.1.7.9.3 1.7.2 2.3.1.7-.1 2.1-.9 2.4-1.7.3-.8.3-1.5.2-1.7-.1-.1-.3-.2-.6-.4z"/></svg>
+  </a>
+
+<script>
+  var TOTAL = 6;
+  var visited = new Set();
+
+  function updateProgress(){
+    var n = visited.size;
+    document.getElementById('progressFill').style.width = (n/TOTAL*100) + '%';
+    document.getElementById('progressLabel').textContent = n + ' de ' + TOTAL + ' desbravados';
+
+    var title = document.getElementById('closingTitle');
+    var text = document.getElementById('closingText');
+    if(n === 0){
+      title.textContent = 'Sua expedição está só começando';
+      text.textContent = 'Marque as paradas que quer incluir no roteiro e, quando estiver pronto, chame no WhatsApp pra fechar tudo.';
+    } else if(n < TOTAL){
+      title.textContent = n + ' de ' + TOTAL + ' paradas desbravadas';
+      text.textContent = 'Bom ritmo! Continue explorando o mapa e marcando os destinos do seu roteiro.';
+    } else {
+      title.textContent = 'Expedição completa! 🏆';
+      text.textContent = 'Você desbravou os seis destinos de Foz do Iguaçu. Hora de transformar isso num roteiro de verdade.';
+    }
+  }
+
+  function toggleStop(id){
+    var isDone = visited.has(id);
+    if(isDone){ visited.delete(id); } else { visited.add(id); }
+
+    document.querySelectorAll('[data-target="'+id+'"]').forEach(function(el){
+      if(el.classList.contains('stop')){ el.classList.toggle('done', !isDone); }
+      if(el.classList.contains('mark-btn')){
+        el.classList.toggle('done', !isDone);
+        el.textContent = !isDone ? 'Desbravada ✓' : 'Marcar como desbravada';
+      }
+    });
+    var stamp = document.querySelector('.stamp[data-stamp="'+id+'"]');
+    if(stamp){ stamp.classList.toggle('visible', !isDone); }
+
+    updateProgress();
+  }
+
+  document.querySelectorAll('.stop').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var id = btn.getAttribute('data-target');
+      document.getElementById(id).scrollIntoView({behavior:'smooth', block:'center'});
+    });
+  });
+
+  document.querySelectorAll('.mark-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      toggleStop(btn.getAttribute('data-target'));
+    });
+  });
+
+  updateProgress();
+</script>
+
+</body>
+</html>
